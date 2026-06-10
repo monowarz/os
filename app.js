@@ -255,7 +255,7 @@ async function loadCalendarFromUrl() {
     renderCalendarEvents(events);
     status.textContent = `Loaded ${events.length} events.`;
   } catch (error) {
-    status.textContent = `Could not load URL (${error?.message || "unknown error"}). If blocked, import an exported Google Calendar ICS file instead.`;
+    status.textContent = `Failed to load calendar: ${error?.message || "unknown error"}. Import an exported Google Calendar ICS file if URL loading is blocked.`;
   }
 }
 
@@ -287,14 +287,17 @@ function bootstrap() {
   document.getElementById("calendar-file").addEventListener("change", loadCalendarFromFile);
 
   detailView.addEventListener("click", (event) => {
-    if (event.target.dataset.deleteTodo !== undefined) {
-      removeItem("todos", Number(event.target.dataset.deleteTodo));
+    const deleteTodo = event.target.getAttribute("data-delete-todo");
+    const deleteReminder = event.target.getAttribute("data-delete-reminder");
+    const deleteNote = event.target.getAttribute("data-delete-note");
+    if (deleteTodo !== null) {
+      removeItem("todos", Number(deleteTodo));
     }
-    if (event.target.dataset.deleteReminder !== undefined) {
-      removeItem("reminders", Number(event.target.dataset.deleteReminder));
+    if (deleteReminder !== null) {
+      removeItem("reminders", Number(deleteReminder));
     }
-    if (event.target.dataset.deleteNote !== undefined) {
-      removeItem("notes", Number(event.target.dataset.deleteNote));
+    if (deleteNote !== null) {
+      removeItem("notes", Number(deleteNote));
     }
   });
 }
