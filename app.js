@@ -210,8 +210,8 @@ function parseIcs(text) {
   const blocks = text.split("BEGIN:VEVENT").slice(1);
   for (const block of blocks) {
     const summary = block.match(/SUMMARY:(.*)/)?.[1]?.trim();
-    const start = block.match(/DTSTART(?:;[^:]+)?:([0-9]{8}(?:T[0-9]{6}Z?)?)/)?.[1];
-    const end = block.match(/DTEND(?:;[^:]+)?:([0-9]{8}(?:T[0-9]{6}Z?)?)/)?.[1];
+    const start = block.match(/DTSTART(?:;[^:]+)?:([0-9]{8}(?:T[0-9]{4}(?:[0-9]{2})?Z?)?)/)?.[1];
+    const end = block.match(/DTEND(?:;[^:]+)?:([0-9]{8}(?:T[0-9]{4}(?:[0-9]{2})?Z?)?)/)?.[1];
     const parsedStart = start ? parseIcsDate(start) : null;
     const parsedEnd = end ? parseIcsDate(end) : null;
     if (summary && parsedStart) {
@@ -249,6 +249,12 @@ async function loadCalendarFromUrl() {
   }
   status.textContent = "Loading calendar...";
   try {
+    const parsedUrl = new URL(url);
+    const isGoogleHost = parsedUrl.hostname.endsWith("google.com");
+    const looksLikeCalendarIcs = parsedUrl.pathname.includes("/calendar/") && parsedUrl.pathname.endsWith(".ics");
+    if (parsedUrl.protocol !== "https:" || !isGoogleHost || !looksLikeCalendarIcs) {
+      throw new Error("URL must be a Google Calendar HTTPS ICS link");
+    }
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
