@@ -178,7 +178,7 @@ function removeItem(kind, index) {
 }
 
 function parseIcsDate(value) {
-  const cleaned = value.replace("Z", "");
+  const cleaned = value.replaceAll("Z", "");
   if (cleaned.length === 8) {
     return new Date(
       Number(cleaned.slice(0, 4)),

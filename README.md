@@ -15,7 +15,7 @@ A lightweight single-page dashboard app with:
 
 ## Run locally
 
-From `/home/runner/work/os/os/monowarz/os`:
+From the repository root:
 
 ```bash
 python3 -m http.server 8080
