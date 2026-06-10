@@ -178,21 +178,28 @@ function removeItem(kind, index) {
 }
 
 function parseIcsDate(value) {
-  const cleaned = value.replaceAll("Z", "");
-  if (cleaned.length === 8) {
+  const match = value.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?)?(Z)?$/);
+  if (!match) return null;
+  const [, year, month, day, hour = "00", minute = "00", second = "00", isUtc] = match;
+  if (isUtc) {
     return new Date(
-      Number(cleaned.slice(0, 4)),
-      Number(cleaned.slice(4, 6)) - 1,
-      Number(cleaned.slice(6, 8))
+      Date.UTC(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        Number(hour),
+        Number(minute),
+        Number(second)
+      )
     );
   }
-
   return new Date(
-    Number(cleaned.slice(0, 4)),
-    Number(cleaned.slice(4, 6)) - 1,
-    Number(cleaned.slice(6, 8)),
-    Number(cleaned.slice(9, 11)),
-    Number(cleaned.slice(11, 13))
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(hour),
+    Number(minute),
+    Number(second)
   );
 }
 
@@ -201,13 +208,15 @@ function parseIcs(text) {
   const blocks = text.split("BEGIN:VEVENT").slice(1);
   for (const block of blocks) {
     const summary = block.match(/SUMMARY:(.*)/)?.[1]?.trim();
-    const start = block.match(/DTSTART(?:;[^:]+)?:([0-9TZ]+)/)?.[1];
-    const end = block.match(/DTEND(?:;[^:]+)?:([0-9TZ]+)/)?.[1];
-    if (summary && start) {
+    const start = block.match(/DTSTART(?:;[^:]+)?:([0-9]{8}(?:T[0-9]{6}Z?)?)/)?.[1];
+    const end = block.match(/DTEND(?:;[^:]+)?:([0-9]{8}(?:T[0-9]{6}Z?)?)/)?.[1];
+    const parsedStart = start ? parseIcsDate(start) : null;
+    const parsedEnd = end ? parseIcsDate(end) : null;
+    if (summary && parsedStart) {
       events.push({
         summary,
-        start: parseIcsDate(start),
-        end: end ? parseIcsDate(end) : null
+        start: parsedStart,
+        end: parsedEnd
       });
     }
   }
@@ -245,8 +254,8 @@ async function loadCalendarFromUrl() {
     localStorage.setItem("calendar-url", url);
     renderCalendarEvents(events);
     status.textContent = `Loaded ${events.length} events.`;
-  } catch {
-    status.textContent = "Could not load URL. If blocked, import an exported Google Calendar ICS file instead.";
+  } catch (error) {
+    status.textContent = `Could not load URL (${error?.message || "unknown error"}). If blocked, import an exported Google Calendar ICS file instead.`;
   }
 }
 
