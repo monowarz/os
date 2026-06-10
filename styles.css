@@ -1,0 +1,148 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #eef4ff, #f8fbff);
+  color: #1a1f2c;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.view {
+  display: none;
+}
+
+.view.active {
+  display: block;
+}
+
+.cards-grid,
+.detail-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.cards-grid {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-bottom: 1rem;
+}
+
+.detail-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.panel,
+.card {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 24px rgba(40, 60, 90, 0.08);
+  padding: 1rem;
+}
+
+.card p,
+.muted {
+  color: #4d5462;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  border-radius: 10px;
+  border: 1px solid #ccd5e5;
+  padding: 0.5rem 0.7rem;
+}
+
+button {
+  border: none;
+  background: #1364ff;
+  color: #fff;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0b4fd0;
+}
+
+form {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.list,
+.notes-grid {
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list li,
+.note {
+  background: #fff;
+  border: 1px solid #e2e8f4;
+  border-radius: 10px;
+  padding: 0.65rem;
+}
+
+.item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.priority {
+  padding: 0.15rem 0.4rem;
+  border-radius: 999px;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 0.8rem;
+}
+
+.priority.high {
+  background: #c62828;
+}
+
+.priority.medium {
+  background: #ff8f00;
+}
+
+.priority.low {
+  background: #2e7d32;
+}
+
+.back-button {
+  margin-bottom: 0.75rem;
+}
+
+.calendar-controls {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+}
+
+.status {
+  min-height: 1.1rem;
+}
+
+.tiny {
+  font-size: 0.85rem;
+  color: #4d5462;
+}
