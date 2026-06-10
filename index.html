@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows 11 Productivity Dashboard</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="container">
+    <section id="dashboard-view" class="view active">
+      <header>
+        <h1>Dashboard</h1>
+      </header>
+      <section id="cards-grid" class="cards-grid" aria-label="Category cards"></section>
+
+      <section class="panel">
+        <h2>Schedule / Calendar</h2>
+        <div class="calendar-controls">
+          <label for="calendar-url">Google Calendar ICS URL</label>
+          <input id="calendar-url" type="url" placeholder="https://calendar.google.com/calendar/ical/.../public/basic.ics">
+          <button id="load-calendar" type="button">Load Calendar</button>
+        </div>
+        <div class="calendar-controls">
+          <label for="calendar-file">Or import Google Calendar ICS file</label>
+          <input id="calendar-file" type="file" accept=".ics,text/calendar">
+        </div>
+        <p id="calendar-status" class="status"></p>
+        <ul id="calendar-events" class="list"></ul>
+      </section>
+    </section>
+
+    <section id="detail-view" class="view">
+      <button id="back-button" class="back-button" type="button" aria-label="Back to dashboard">← Back</button>
+      <header>
+        <h1 id="detail-title"></h1>
+      </header>
+      <p id="detail-overview" class="muted"></p>
+
+      <div class="detail-grid">
+        <section class="panel">
+          <h2>To-Do List</h2>
+          <form id="todo-form">
+            <input id="todo-text" type="text" placeholder="Task" required>
+            <select id="todo-priority" required>
+              <option value="high">High</option>
+              <option value="medium" selected>Medium</option>
+              <option value="low">Low</option>
+            </select>
+            <button type="submit">Add</button>
+          </form>
+          <ul id="todo-list" class="list"></ul>
+        </section>
+
+        <section class="panel">
+          <h2>Reminders</h2>
+          <form id="reminder-form">
+            <input id="reminder-text" type="text" placeholder="Reminder" required>
+            <input id="reminder-when" type="datetime-local" required>
+            <select id="reminder-repeat">
+              <option value="none" selected>No repeat</option>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+            <button type="submit">Add</button>
+          </form>
+          <ul id="reminder-list" class="list"></ul>
+        </section>
+
+        <section class="panel">
+          <h2>Notes</h2>
+          <form id="note-form">
+            <input id="note-title" type="text" placeholder="Note title" required>
+            <textarea id="note-body" rows="3" placeholder="Write a note..." required></textarea>
+            <button type="submit">Save</button>
+          </form>
+          <div id="notes-grid" class="notes-grid"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>
