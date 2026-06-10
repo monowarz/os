@@ -21,4 +21,4 @@ From the repository root:
 python3 -m http.server 8080
 ```
 
-Then open `http://localhost:8080` in a browser on Windows 11.
+Then open `http://localhost:8080` in a modern browser. The UI is styled to feel Windows 11-like.

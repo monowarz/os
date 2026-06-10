@@ -178,17 +178,19 @@ function removeItem(kind, index) {
 }
 
 function parseIcsDate(value) {
-  const match = value.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?)?(Z)?$/);
+  const match = value.match(/^(\d{4})(\d{2})(\d{2})(?:T(\d{2})(\d{2})(\d{2})?(Z)?)?$/);
   if (!match) return null;
-  const [, year, month, day, hour = "00", minute = "00", second = "00", isUtc] = match;
+  const [, year, month, day, hour, minute, second = "00", isUtc] = match;
+  const parsedHour = hour ?? "00";
+  const parsedMinute = minute ?? "00";
   if (isUtc) {
     return new Date(
       Date.UTC(
         Number(year),
         Number(month) - 1,
         Number(day),
-        Number(hour),
-        Number(minute),
+        Number(parsedHour),
+        Number(parsedMinute),
         Number(second)
       )
     );
@@ -197,8 +199,8 @@ function parseIcsDate(value) {
     Number(year),
     Number(month) - 1,
     Number(day),
-    Number(hour),
-    Number(minute),
+    Number(parsedHour),
+    Number(parsedMinute),
     Number(second)
   );
 }
@@ -255,7 +257,7 @@ async function loadCalendarFromUrl() {
     renderCalendarEvents(events);
     status.textContent = `Loaded ${events.length} events.`;
   } catch (error) {
-    status.textContent = `Failed to load calendar: ${error?.message || "unknown error"}. Import an exported Google Calendar ICS file if URL loading is blocked.`;
+    status.textContent = `Failed to load calendar: ${error?.message || "unknown error"}.`;
   }
 }
 
